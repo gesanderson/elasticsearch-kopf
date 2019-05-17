@@ -1,4 +1,5 @@
 {
+    "elasticsearch_location": "",
     "elasticsearch_root_path": "",
     "with_credentials": false,
     "theme": "dark",

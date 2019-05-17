@@ -1256,7 +1256,7 @@ kopf.controller('GlobalController', ['$scope', '$location', '$sce', '$window',
 
     $scope.connect = function() {
       try {
-        var host = 'http://localhost:9200'; // default
+        var host = 'http://localhost:9200'; 
         if ($location.host() !== '') { // not opening from fs
           var location = $scope.readParameter('location');
           var url = $location.absUrl();
@@ -1265,7 +1265,8 @@ kopf.controller('GlobalController', ['$scope', '$location', '$sce', '$window',
           } else if (url.indexOf('/_plugin/kopf') > -1) {
             host = url.substring(0, url.indexOf('/_plugin/kopf'));
           } else {
-            host = $location.protocol() + '://' + $location.host() +
+            host = ExternalSettingsService.getElasticsearchLocation() ||
+                $location.protocol() + '://' + $location.host() +
                 ':' + $location.port();
           }
         }
@@ -5562,6 +5563,8 @@ kopf.factory('ExternalSettingsService', ['DebugService',
 
     var KEY = 'kopfSettings';
 
+    var ES_LOCATION = 'elasticsearch_location';
+
     var ES_ROOT_PATH = 'elasticsearch_root_path';
 
     var WITH_CREDENTIALS = 'with_credentials';
@@ -5612,6 +5615,10 @@ kopf.factory('ExternalSettingsService', ['DebugService',
       });
       return settings;
     };
+
+    this.getElasticsearchLocation = function() {
+      return this.getSettings()[ES_LOCATION];
+    }
 
     this.getElasticsearchRootPath = function() {
       return this.getSettings()[ES_ROOT_PATH];
